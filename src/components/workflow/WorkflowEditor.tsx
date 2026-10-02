@@ -186,7 +186,29 @@ export default function WorkflowEditor() {
           >
             + Add Decision
           </button>
+<button
+  type="button"
+  onClick={async () => {
+    const response = await fetch("/api/workflow/execute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nodes,
+        edges,
+        startNodeId: "1",
+      }),
+    });
 
+    const result = await response.json();
+
+    console.log(result);
+  }}
+  className="ml-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500"
+>
+  Run Workflow
+</button>
           <button
             type="button"
             onClick={resetWorkflow}
