@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Workflow System
 
-## Getting Started
+A visual AI workflow system where each decision node asks an AI question and returns either **YES** or **NO**. The result determines which connected path the workflow follows.
 
-First, run the development server:
+Workflow execution is handled by **Inngest**, while the workflow is created and visualized using **React Flow**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Visual workflow editor
+- AI decision nodes
+- Editable decision prompts
+- YES and NO branching
+- Dynamic workflow traversal
+- Inngest-based workflow execution
+- OpenAI integration
+- Mock AI mode for development and testing
+- Execution status tracking
+- Execution log panel
+- Local workflow persistence
+- JSON workflow export
+- JSON workflow import
+- Reset workflow functionality
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js
+- React
+- TypeScript
+- React Flow (`@xyflow/react`)
+- Inngest
+- OpenAI SDK
+- Tailwind CSS
+- Shadcn
+- LocalStorage
 
-## Learn More
+## How It Works
 
-To learn more about Next.js, take a look at the following resources:
+Each workflow node represents an AI decision.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For example:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```text
+                 YES
+                  |
+                  v
+        Technical Support
+       /
+Support Request?
+       \
+        \
+         NO
+          |
+          v
+       Sales Inquiry
