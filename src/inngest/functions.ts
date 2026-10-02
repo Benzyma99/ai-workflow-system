@@ -2,6 +2,11 @@ import OpenAI from "openai";
 
 import { inngest } from "./client";
 
+import {
+  createExecution,
+  updateExecution,
+} from "@/lib/workflow-executions";
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -26,6 +31,7 @@ type WorkflowEventData = {
   nodes: WorkflowNode[];
   edges: WorkflowEdge[];
   startNodeId: string;
+  executionId?: string;
 };
 
 type Decision = "YES" | "NO";
@@ -112,6 +118,16 @@ export const executeWorkflow = inngest.createFunction(
   async ({ event, step }) => {
     const data = event.data as WorkflowEventData;
 
+    const executionId = data.executionId;
+
+    if (!executionId) {
+      throw new Error(
+        "Missing executionId in workflow event.",
+      );
+    }
+
+    createExecution(executionId);
+
     const execution: Array<{
       nodeId: string;
       prompt: string;
@@ -147,6 +163,10 @@ export const executeWorkflow = inngest.createFunction(
         decision,
       });
 
+      updateExecution(executionId, {
+        execution: [...execution],
+      });
+
       const nextEdge = data.edges.find((edge) => {
         if (edge.source !== node.id) {
           return false;
@@ -166,6 +186,11 @@ export const executeWorkflow = inngest.createFunction(
 
       currentNodeId = nextEdge?.target ?? null;
     }
+
+    updateExecution(executionId, {
+      status: "completed",
+      execution,
+    });
 
     return {
       status: "completed",
